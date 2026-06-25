@@ -77,15 +77,16 @@ export const globalStyles = StyleSheet.create({
   },
   nav: {
     width: '100%',
-    gap: 10,
+    alignItems: 'center',
   },
   navItem: {
-    minHeight: 70,
+    width: 52,
+    height: 58,
     borderRadius: 8,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 8,
-    paddingVertical: 10,
+    paddingVertical: 16,
   },
   navItemActive: {
     backgroundColor: colors.surfaceRaised,
@@ -100,13 +101,18 @@ export const globalStyles = StyleSheet.create({
     height: 1,
     alignSelf: 'center',
     backgroundColor: colors.border,
+    marginVertical: 16,
   },
   navIndicator: {
-    width: 28,
+    width: 12,
     height: 4,
     borderRadius: 2,
     backgroundColor: colors.primary,
     marginBottom: 10,
+    alignSelf: 'center',
+  },
+  navIndicatorOff: {
+    opacity: 0.11,
   },
   navLabel: {
     color: colors.textSecondary,
@@ -126,13 +132,30 @@ export const globalStyles = StyleSheet.create({
     backgroundColor: colors.surface,
     borderBottomWidth: 1,
     borderBottomColor: colors.border,
-    justifyContent: 'center',
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingHorizontal: 28,
   },
   topbarTitle: {
     color: colors.text,
     fontSize: 20,
     fontWeight: '700',
+  },
+  navbarStatus: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 18,
+  },
+  navbarStatusItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  navbarStatusText: {
+    color: colors.text,
+    fontSize: 14,
+    fontWeight: '600',
   },
   content: {
     flex: 1,
