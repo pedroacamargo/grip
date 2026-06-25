@@ -1,98 +1,89 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { colors, globalStyles } from "@/styles/global";
+import { Image } from "expo-image";
+import { SymbolView } from "expo-symbols";
+import { Fragment, useState } from "react";
+import { Pressable, Text, View } from "react-native";
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+const tabs = [
+  {
+    label: "Dashboard",
+    icon: { ios: "chart.bar.fill", android: "dashboard", web: "dashboard" },
+  },
+  {
+    label: "Players",
+    icon: { ios: "person.2.fill", android: "groups", web: "groups" },
+  },
+  {
+    label: "Board",
+    icon: {
+      ios: "rectangle.grid.2x2.fill",
+      android: "grid_view",
+      web: "grid_view",
+    },
+  },
+] as const;
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
+export default function Index() {
+  const [activeTab, setActiveTab] = useState<(typeof tabs)[number]["label"]>(
+    tabs[0].label,
+  );
+
   return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
+    <View style={globalStyles.appShell}>
+      <View style={globalStyles.sidebar}>
+        <View style={globalStyles.logoMark}>
+          <Image
+            source={require("../../assets/imgs/logo.png")}
+            style={globalStyles.logoImage}
+            contentFit="contain"
+          />
+        </View>
+
+        <View style={globalStyles.nav}>
+          {tabs.map((tab, index) => {
+            const isActive = tab.label === activeTab;
+
+            return (
+              <Fragment key={tab.label}>
+                <Pressable
+                  accessibilityLabel={tab.label}
+                  accessibilityRole="tab"
+                  accessibilityState={{ selected: isActive }}
+                  onPress={() => setActiveTab(tab.label)}
+                  style={({ pressed }) => [
+                    globalStyles.navItem,
+                    isActive && globalStyles.navItemActive,
+                    pressed && globalStyles.navItemPressed,
+                  ]}
+                >
+                  {isActive ? <View style={globalStyles.navIndicator} /> : null}
+                  <SymbolView
+                    name={tab.icon}
+                    size={28}
+                    tintColor={isActive ? colors.text : colors.textSecondary}
+                  />
+                </Pressable>
+                {index < tabs.length - 1 ? (
+                  <View style={globalStyles.navSeparator} />
+                ) : null}
+              </Fragment>
+            );
+          })}
+        </View>
+      </View>
+
+      <View style={globalStyles.mainArea}>
+        <View style={globalStyles.topbar}>
+          <Text style={globalStyles.topbarTitle}></Text>
+        </View>
+
+        <View style={globalStyles.content}>
+          <Text style={globalStyles.contentTitle}>{activeTab}</Text>
+          <Text style={globalStyles.contentText}>
+            Edit src/app/index.tsx to build this section.
+          </Text>
+        </View>
+      </View>
+    </View>
   );
 }
-
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});
