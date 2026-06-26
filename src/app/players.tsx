@@ -13,8 +13,7 @@ import {
 } from "react-native";
 
 export default function Players() {
-  const { players, isLoading, isSaving, error, refreshPlayers, addPlayer } =
-    usePlayer();
+  const { players, isLoading, isSaving, error, addPlayer } = usePlayer();
   const [name, setName] = useState("");
   const [year, setYear] = useState("");
   const [number, setNumber] = useState("");
@@ -95,9 +94,6 @@ export default function Players() {
 
       <View style={styles.listHeader}>
         <Text style={styles.listTitle}>Database rows ({players.length})</Text>
-        <Pressable onPress={() => void refreshPlayers()} style={styles.refreshButton}>
-          <Text style={styles.refreshText}>Refresh</Text>
-        </Pressable>
       </View>
 
       {isLoading ? (
@@ -149,15 +145,8 @@ const styles = StyleSheet.create({
   },
   buttonPressed: { opacity: 0.72 },
   buttonText: { color: colors.background, fontWeight: "700" },
-  listHeader: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 10,
-  },
+  listHeader: { marginBottom: 10 },
   listTitle: { color: colors.text, fontSize: 16, fontWeight: "700" },
-  refreshButton: { paddingVertical: 6, paddingHorizontal: 10 },
-  refreshText: { color: colors.secondary, fontWeight: "700" },
   emptyList: { flexGrow: 1, justifyContent: "center", alignItems: "center" },
   row: {
     flexDirection: "row",
