@@ -80,7 +80,7 @@ export function Navbar({ title }: NavbarProps) {
 
   return (
     <View style={globalStyles.topbar}>
-      <Text style={globalStyles.topbarTitle}>{title}</Text>
+      <Text style={globalStyles.topbarTitle}>Kouci v0.0.1</Text>
 
       <View style={globalStyles.navbarStatus}>
         <View style={globalStyles.navbarStatusItem}>

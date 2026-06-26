@@ -2,7 +2,7 @@ import { colors, globalStyles } from "@/styles/global";
 import { Image } from "expo-image";
 import { Link } from "expo-router";
 import { SymbolView } from "expo-symbols";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Pressable, View } from "react-native";
 
 export const tabs = [
@@ -32,6 +32,12 @@ type SidebarProps = {
 };
 
 export function Sidebar({ activeTab }: SidebarProps) {
+  const [selectedTab, setSelectedTab] = useState(activeTab);
+
+  useEffect(() => {
+    setSelectedTab(activeTab);
+  }, [activeTab]);
+
   return (
     <View style={globalStyles.sidebar}>
       <View style={globalStyles.logoMark}>
@@ -44,12 +50,13 @@ export function Sidebar({ activeTab }: SidebarProps) {
 
       <View style={globalStyles.nav}>
         {tabs.map((tab, index) => {
-          const isActive = tab.label === activeTab;
+          const isActive = tab.label === selectedTab;
 
           return (
             <Fragment key={tab.label}>
               <Link href={tab.href} asChild>
                 <Pressable
+                  onPress={() => setSelectedTab(tab.label)}
                   accessibilityLabel={tab.label}
                   accessibilityRole="tab"
                   accessibilityState={{ selected: isActive }}
